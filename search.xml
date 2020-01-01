@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>TODO 2020</title>
+    <url>/2020/01/01/TODO_2020/</url>
+    <content><![CDATA[<p>[]����ѧϰ dubbo��ѧϰдһ�����׵� RPC ���<br>[]ѧϰʹ�� RocketMQ<br>[]ѧϰ TCP/IP Э�������̡�netty<br>[]ѧϰ MongoDB<br>[]����ѧϰ Spring��mybatis<br>[]�ع�����<br>[]��ϰ�����ԡ�������<br>[]ȥ���ڣ�<br>[]���豸 ���� ����ʾ��<br>…</p>
+]]></content>
+      <tags>
+        <tag>TODO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kafka 学习</title>
     <url>/2020/01/01/kafka-%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h1 id="1-Kafka-基础概念"><a href="#1-Kafka-基础概念" class="headerlink" title="[1] Kafka 基础概念"></a>[1] Kafka 基础概念</h1><p>​    Kafka 起初是由 LinkedIn 公司采用 Scala 语言开发的一个多分区, 多副本且基于 ZooKeeper 协调的分布式消息系统.</p>
@@ -270,6 +279,11 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">describeTopic</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    AdminClient client = AdminClient.create(properties);</span><br><span class="line">    DescribeTopicsResult describeTopicsResult = client.describeTopics(Collections.singleton(topic));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Map&lt;String, TopicDescription&gt; stringTopicDescriptionMap =</span><br><span class="line">            describeTopicsResult.all().get();</span><br><span class="line">        System.out.println(stringTopicDescriptionMap);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>更多操作请百度</p>
+<h1 id="5-日志存储"><a href="#5-日志存储" class="headerlink" title="[5] 日志存储"></a>[5] 日志存储</h1><p>​    kafka 的消息 称为日志， 日志持久化在磁盘上</p>
+<h2 id="文件目录布局"><a href="#文件目录布局" class="headerlink" title="文件目录布局"></a>文件目录布局</h2><p>​        主题可分为多个分区，每个分区对应一个日志 (log) ，为了防止 Log 过大，又切分多个 LogSegment  。Log 在物理上只以文件夹的形式存储，而每个 LogSegment 对应于磁盘上的一个日志文件和两个索引文件，以及可能的其他文件。</p>
+<img url="../image/kafka日志关系.PNG"/>
+
+<p><img src=".%5Cimages%5Ckafka%E6%97%A5%E5%BF%97%E5%85%B3%E7%B3%BB.PNG" alt=""></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -277,23 +291,5 @@
       <tags>
         <tag>笔记</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2019/12/31/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
   </entry>
 </search>
