@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ngxin 并发配置</title>
+    <url>/2020/01/15/ngxin_%E5%B9%B6%E5%8F%91%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="控制速率"><a href="#控制速率" class="headerlink" title="控制速率"></a>控制速率</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">	# 设置限流配置</span><br><span class="line">    limit_req_zone $binary_remote_addr zone&#x3D;myRateLimit:10m rate&#x3D;2r&#x2F;s;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	server &#123;</span><br><span class="line">		location &#x2F; &#123;</span><br><span class="line">			limit_req zone&#x3D;myRateLimit;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>binary_remote_addr 是一种key，表示基于 remote_addr(客户端IP) 来做限流，binary_ 的目的是压缩内存占用量。<br>zone：定义共享内存区来存储访问信息， myRateLimit:10m 表示一个大小为10M，名字为myRateLimit的内存区域。1M能存储16000 IP地址的访问信息，10M可以存储16W IP地址访问信息。<br>rate 用于设置最大访问速率，rate=10r/s 表示每秒最多处理10个请求。Nginx 实际上以毫秒为粒度来跟踪请求信息，因此 10r/s 实际上是限制：每100毫秒处理一个请求。这意味着，自上一个请求处理完后，若后续100毫秒内又有请求到达，将拒绝处理该请求.</p>
+<h2 id="处理突发流量"><a href="#处理突发流量" class="headerlink" title="处理突发流量"></a>处理突发流量</h2><p>上面例子限制 10r/s，如果有时正常流量突然增大，超出的请求将被拒绝，无法处理突发流量，可以结合 <strong>burst</strong> 参数使用来解决该问题。</p>
+<p>如下配置表示：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">		<span class="attribute">limit_req</span> zone=myRateLimit burst=<span class="number">20</span>;</span><br><span class="line">        <span class="attribute">root</span>   html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>burst 译为突发、爆发，表示在超过设定的处理速率后能额外处理的请求数,当 rate=10r/s 时，将1s拆成10份，即每100ms可处理1个请求。</p>
+<p>此处，*<em>burst=20 *</em>，若同时有21个请求到达，Nginx 会处理第一个请求，剩余20个请求将放入队列，然后每隔100ms从队列中获取一个请求进行处理。若请求数大于21，将拒绝处理多余的请求，直接返回503.</p>
+<p>不过，单独使用 burst 参数并不实用。假设 burst=50 ，rate依然为10r/s，排队中的50个请求虽然每100ms会处理一个，但第50个请求却需要等待 50 * 100ms即 5s，这么长的处理时间自然难以接受。</p>
+<p>因此，burst 往往结合 nodelay 一起使用。</p>
+<p>例如：如下配置：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">		<span class="attribute">limit_req</span> zone=myRateLimit burst=<span class="number">5</span> nodelay;</span><br><span class="line">        <span class="attribute">root</span>   html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="控制并发量-连接数"><a href="#控制并发量-连接数" class="headerlink" title="控制并发量 (连接数)"></a>控制并发量 (连接数)</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">limit_conn_zone $binary_remote_addr zone&#x3D;addr:10m : 表示限制根据用户的 ip 地址来显示，设置存储地址为内存大小 10M</span><br><span class="line"></span><br><span class="line">limit_conn addr 2; 表示 同一个地址只允许连接 2 次。</span><br></pre></td></tr></table></figure>
+<p>限制每个客户端IP与服务器的连接数，同时限制与虚拟服务器的连接总数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">limit_conn_zone $binary_remote_addr zone&#x3D;perip:10m;</span><br><span class="line">limit_conn_zone $server_name zone&#x3D;perserver:10m;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">location &#x2F;&#123;</span><br><span class="line">	limit_conn perip 10;# 单个客户端ip与服务端的连接数</span><br><span class="line">	limit_conn perserver 100; #限制与服务器的总连接数 谨慎配置</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>ngxin</category>
+      </categories>
+  </entry>
+  <entry>
     <title>TODO 2020</title>
     <url>/2020/01/01/TODO_2020/</url>
     <content><![CDATA[<ul>
