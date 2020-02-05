@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Canal_配置与使用</title>
+    <url>/2020/02/05/Canal-%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>分布式架构技术栈</category>
+      </categories>
+      <tags>
+        <tag>数据同步</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ngxin 并发配置</title>
     <url>/2020/01/15/ngxin_%E5%B9%B6%E5%8F%91%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h1 id="控制速率"><a href="#控制速率" class="headerlink" title="控制速率"></a>控制速率</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">	# 设置限流配置</span><br><span class="line">    limit_req_zone $binary_remote_addr zone&#x3D;myRateLimit:10m rate&#x3D;2r&#x2F;s;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	server &#123;</span><br><span class="line">		location &#x2F; &#123;</span><br><span class="line">			limit_req zone&#x3D;myRateLimit;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -24,24 +35,6 @@
       <categories>
         <category>ngxin</category>
       </categories>
-  </entry>
-  <entry>
-    <title>TODO 2020</title>
-    <url>/2020/01/01/TODO_2020/</url>
-    <content><![CDATA[<ul>
-<li><input disabled="" type="checkbox"> 深入学习 dubbo，学习写一个简易的 RPC 框架 </li>
-<li><input disabled="" type="checkbox"> 学习使用 RocketMQ</li>
-<li><input disabled="" type="checkbox"> 学习 TCP/IP 协议网络编程、netty</li>
-<li><input disabled="" type="checkbox"> 学习 MongoDB</li>
-<li><input disabled="" type="checkbox"> 深入学习 Spring、mybatis</li>
-<li><input disabled="" type="checkbox"> 重构简历、复习、面试、换工作</li>
-<li><input disabled="" type="checkbox"> 去深圳工作？</li>
-<li><input disabled="" type="checkbox"> 换设备 主机 、显示屏<br>…</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>TODO</tag>
-      </tags>
   </entry>
   <entry>
     <title>kafka 学习</title>
